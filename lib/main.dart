@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool opacidade = true;
 
   // This widget is the root of your application.
   @override
@@ -27,22 +34,44 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Tarefas'),
+          leading: Icon(Icons.add_task),
         ),
-        body: ListView(
-          children: [
-            Task('Aprender Flutter',
-                'https://pbs.twimg.com/media/Eu7m692XIAEvxxP?format=png&name=large'),
-            Task('Andar de Bike',
-                'https://tswbike.com/wp-content/uploads/2020/09/108034687_626160478000800_2490880540739582681_n-e1600200953343.jpg'),
-            Task('Meditar',
-                'https://manhattanmentalhealthcounseling.com/wp-content/uploads/2019/06/Top-5-Scientific-Findings-on-MeditationMindfulness-881x710.jpeg'),
-            Task('Ir para o Intervalo',
-                'https://img.freepik.com/fotos-premium/amigos-de-adolescentes-felizes-andando-conversando-aproveitando-o-dia-na-cidade_116407-4223.jpg'),
-            Task('Ler',
-                'https://thebogotap8ost.com/wp-content/uploads/2017/06/636052464065850579-137719760_flyer-image-1.jpg')
-          ],
+        body: AnimatedOpacity(
+          opacity: opacidade ? 1.0 : 0.0,
+          duration: Duration(milliseconds: 1000),
+          child: ListView(
+            children: [
+              Task(
+                  'Aprender Flutter',
+                  'https://pbs.twimg.com/media/Eu7m692XIAEvxxP?format=png&name=large',
+                  2),
+              Task(
+                  'Andar de Bike',
+                  'https://tswbike.com/wp-content/uploads/2020/09/108034687_626160478000800_2490880540739582681_n-e1600200953343.jpg',
+                  5),
+              Task(
+                  'Meditar',
+                  'https://manhattanmentalhealthcounseling.com/wp-content/uploads/2019/06/Top-5-Scientific-Findings-on-MeditationMindfulness-881x710.jpeg',
+                  1),
+              Task(
+                  'Ler',
+                  'https://img.freepik.com/fotos-premium/amigos-de-adolescentes-felizes-andando-conversando-aproveitando-o-dia-na-cidade_116407-4223.jpg',
+                  3),
+              Task(
+                  'Jogar',
+                  'https://thebogotap8ost.com/wp-content/uploads/2017/06/636052464065850579-137719760_flyer-image-1.jpg',
+                  4)
+            ],
+          ),
         ),
-        floatingActionButton: FloatingActionButton(onPressed: () {}),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              opacidade = !opacidade;
+            });
+          },
+          child: Icon(Icons.remove_red_eye),
+        ),
       ),
     );
   }
@@ -77,18 +106,27 @@ class _TaskState extends State<Task> {
             Column(
               children: [
                 Container(
-                  color: Colors.white,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.white,
+                  ),
                   height: 100,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        color: Colors.black26,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.black26,
+                        ),
                         height: 100,
-                        width: 100,
-                        child: Image.network(
-                          widget.foto,
-                          fit: BoxFit.cover,
+                        width: 80,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: Image.network(
+                            widget.foto,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       Column(
@@ -114,22 +152,22 @@ class _TaskState extends State<Task> {
                                       : Colors.blue[100]),
                               Icon(Icons.star,
                                   size: 15,
-                                  color: (widget.dificuldade >= 1)
+                                  color: (widget.dificuldade >= 2)
                                       ? Colors.blue
                                       : Colors.blue[100]),
                               Icon(Icons.star,
                                   size: 15,
-                                  color: (widget.dificuldade >= 1)
+                                  color: (widget.dificuldade >= 3)
                                       ? Colors.blue
                                       : Colors.blue[100]),
                               Icon(Icons.star,
                                   size: 15,
-                                  color: (widget.dificuldade >= 1)
+                                  color: (widget.dificuldade >= 4)
                                       ? Colors.blue
                                       : Colors.blue[100]),
                               Icon(Icons.star,
                                   size: 15,
-                                  color: (widget.dificuldade >= 1)
+                                  color: (widget.dificuldade >= 5)
                                       ? Colors.blue
                                       : Colors.blue[100]),
                             ],
